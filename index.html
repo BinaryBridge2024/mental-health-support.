@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Support Chatbot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #chat {
+            width: 100%;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+
+        #chat h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        #nameInput {
+            width: 96.5%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .message-container {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .user-message-container {
+            justify-content: flex-end;
+        }
+
+        .bot-message-container {
+            justify-content: flex-start; 
+        }
+
+        .message {
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 70%;
+            word-wrap: break-word;
+            position: relative;
+        }
+
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            border-bottom-right-radius: 0;
+        }
+
+        .bot-message {
+            background-color: #f1f1f1;
+            color: #333;
+            border-bottom-left-radius: 0;
+        }
+
+        .user-logo, .bot-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 10px;
+        }
+
+        .user-logo {
+            order: 2; 
+        }
+
+        .bot-logo {
+            order: 0; 
+        }
+
+        textarea {
+            width: 96.5%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            resize: none;
+            outline: none;
+            margin-bottom: 10px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        textarea:focus {
+            border-color: #007bff;
+        }
+
+        #sendBtn {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #sendBtn:hover {
+            background-color: #0056b3;
+        }
+
+        #clearBtn {
+            width: 100%;
+            padding: 12px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #clearBtn:hover {
+            background-color: #d32f2f;
+        }
+
+       
+
+        #typingIndicator {
+            font-style: italic;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            #chat {
+                height: 95vh;
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            textarea {
+                font-size: 14px;
+            }
+
+            #sendBtn, #clearBtn {
+                font-size: 14px;
+            }
+        }
+
+#feedbackSection {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#feedbackSection button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#feedbackSection button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <div id="chat">
+        <h2>Mental Health Support Chatbot</h2>
+        <input type="text" id="nameInput" placeholder="Enter your name..." />
+        <div id="messages"></div>
+        <p id="typingIndicator" style="display: none;">Chatbot is typing...</p>
+        <textarea id="userInput" rows="3" placeholder="Message ChatBot"></textarea>
+        <button id="sendBtn">Send</button>
+        <button id="clearBtn">Clear Conversation</button>
+        <!-- Feedback Section -->
+    <div id="feedbackSection" style="display: block;">
+    <button id="thumbsUpBtn">👍</button>
+    <button id="thumbsDownBtn">👎</button>
+    <button id="starRatingBtn">⭐</button>
+</div>
+
+    </div>
+
+    <script>
+        const sendBtn = document.getElementById('sendBtn');
+        const userInput = document.getElementById('userInput');
+        const messagesDiv = document.getElementById('messages');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const nameInput = document.getElementById('nameInput');
+        const clearBtn = document.getElementById('clearBtn');
+        const feedbackIcons = document.querySelectorAll('.feedback-icon');
+
+        let userName = '';
+
+        // Scroll to bottom function
+        const scrollToBottom = () => {
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+
+        // Send message to chatbot
+        const sendMessage = async () => {
+            const inputText = userInput.value.trim();
+            if (!inputText) {
+                alert("Please enter a message.");
+                return;
+            }
+
+            // Get user name if it's not set
+            if (!userName) {
+                userName = nameInput.value.trim();
+                if (!userName) {
+                    alert("Please enter your name.");
+                    return;
+                }
+                nameInput.style.display = 'none';
+            }
+
+            // Display user message
+            const userMessageContainer = document.createElement('div');
+            userMessageContainer.classList.add('message-container', 'user-message-container');
+
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('message', 'user-message');
+            userMessage.textContent = `${userName}: ${inputText}`;
+
+            const userLogo = document.createElement('img');
+            userLogo.src = 'logos/user_logo.jpg'; 
+            userLogo.classList.add('user-logo');
+
+            userMessageContainer.appendChild(userMessage);
+            userMessageContainer.appendChild(userLogo);
+
+            messagesDiv.appendChild(userMessageContainer);
+            userInput.value = '';
+            scrollToBottom();
+
+            typingIndicator.style.display = 'block'; 
+
+            try {
+                const response = await fetch('http://localhost:3000/mental-health-support', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userInput: inputText }),
+                });
+
+                const data = await response.json();
+
+                // Display bot response
+                const botMessageContainer = document.createElement('div');
+                botMessageContainer.classList.add('message-container', 'bot-message-container'); 
+
+                const botMessage = document.createElement('div');
+                botMessage.classList.add('message', 'bot-message');
+                botMessage.textContent = `Chatbot: ${data.reply}`;
+
+                const botLogo = document.createElement('img');
+                botLogo.src = 'logos/ChatGPT-Logo.png'; 
+
+                botLogo.classList.add('bot-logo');
+
+                botMessageContainer.appendChild(botLogo); 
+                botMessageContainer.appendChild(botMessage);
+
+                messagesDiv.appendChild(botMessageContainer);
+                scrollToBottom();
+            } catch (error) {
+                console.error('Error fetching response:', error);
+            } finally {
+                typingIndicator.style.display = 'none'; 
+            }
+        };
+
+        // Handle send button click
+        sendBtn.addEventListener('click', sendMessage);
+
+        // Handle Enter key press for sending messages
+        userInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Handle clear button
+        clearBtn.addEventListener('click', () => {
+            messagesDiv.innerHTML = '';
+            userName = '';
+            nameInput.style.display = 'block';
+        });
+
+      let lastResponseId = null; // Track the last response ID
+
+// Function to display feedback options
+const displayFeedbackOptions = (responseId) => {
+    lastResponseId = responseId;
+    document.getElementById('feedbackSection').style.display = 'flex';
+};
+
+// Function to handle feedback button click
+const handleFeedback = async (feedbackType) => {
+    const comment = prompt("Please provide any additional comments (optional):");
+    
+    // Send feedback to server
+    const response = await fetch('http://localhost:3000/feedback', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ feedbackType, responseId: lastResponseId, comment }),
+    });
+
+    const data = await response.json();
+    alert(data.message); // Show success message
+    document.getElementById('feedbackSection').style.display = 'block'; // Hide feedback options
+};
+
+// Event listeners for feedback buttons
+document.getElementById('thumbsUpBtn').addEventListener('click', () => handleFeedback('thumbsUp'));
+document.getElementById('thumbsDownBtn').addEventListener('click', () => handleFeedback('thumbsDown'));
+document.getElementById('starRatingBtn').addEventListener('click', () => handleFeedback('starRating'));
+
+    </script>
+</body>
+</html>
