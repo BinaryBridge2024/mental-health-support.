@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Mental Health Support Chatbot Documentation
 
 ## Overview
