@@ -105,7 +105,7 @@ This endpoint collects feedback from the user about the chatbot's response.
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/yourusername/mental-health-support-chatbot.git
+   git clone https://binarybridge2024.github.io/mental-health-support.git
    ```
 2. **Install Dependencies:**
    ```bash
@@ -139,41 +139,3 @@ This endpoint collects feedback from the user about the chatbot's response.
 5. **Give Feedback**: After receiving a response, rate the helpfulness using the feedback mechanism. This helps improve the chatbot's performance.
 
 6. **Clear the Conversation**: Use the "Clear Conversation" button to reset the chat interface.
-
----
-
-## Next Steps
-
-- **Deploy to Cloud**: You can deploy this application to any cloud provider like Heroku, AWS, or Google Cloud.
-- **Integrate a Database**: Add a MongoDB or MySQL database to store user interactions and feedback for deeper analysis.
-- **Enhance User Experience**: Improve the UI/UX by adding features like avatars, animations, or voice input.
-
----
-
-## Challenges Faced
-
-- Ensuring that the chatbot gives meaningful and supportive responses for sensitive mental health topics.
-- Implementing smooth feedback mechanisms to improve the chatbot over time.
-- Designing a simple, yet responsive, user interface that is easy to use on both desktop and mobile devices.
-
----
-
-## What’s Next for Mental Health Support
-
-- **Expand Response Library**: Add more nuanced and detailed responses to a broader range of mental health issues.
-- **Machine Learning Integration**: Implement NLP models to make the chatbot more intelligent, providing personalized responses based on user input.
-- **Multi-language Support**: Expand the chatbot to support multiple languages, increasing accessibility for non-English speakers.
-- **Community Features**: Build in real-time community support or peer-matching features to connect users with similar challenges.
-
----
-
-## Credits
-
-- **Inspiration**: This project was inspired by the increasing need for accessible mental health support, especially during times of crisis or isolation.
-- **Learning**: The process taught me about building APIs, handling user input, and designing interfaces that are user-friendly and helpful.
-- **Acknowledgments**: Special thanks to the open-source community and mental health advocates for providing inspiration and resources.
-
----
-=======
-# mental-health-support
->>>>>>> e0cafa6a5f2651d6eb1c1f2332c90c36dfd27888
